@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import { TabContainer, Tab, TabPanel } from './Tabs';
 import DailyChart from './DailyChart';
 import WeeklyChart from './WeeklyChart';
+import MonthlyChart from './MonthlyChart';
 import AddCallButton from './AddCallButton';
 import GlobalStyle from '../config/GlobalStyle';
-import { TabContainer, Tab, TabPanel } from './Tabs';
-import { readDataFromFile, writeDataToFile, getDataFromWeeklyFiles } from '../utils/fileUtils';
+import { readDataFromFile, writeDataToFile, getDataFromFiles } from '../utils/fileUtils';
 import { isEmptyObj, getNumOfCallFromType } from '../utils/helpers';
 
 class App extends Component {
@@ -17,6 +18,8 @@ class App extends Component {
       dailyAnsweredCalls: [],
       weeklyUnansweredCalls: [],
       weeklyAnsweredCalls: [],
+      monthlyUnansweredCalls: [],
+      monthlyAnsweredCalls: [],
     };
   }
 
@@ -27,6 +30,7 @@ class App extends Component {
   updateCharts() {
     this.getDailyData();
     this.getWeeklyData();
+    this.getMonthlyData();
   }
 
   getDailyData() {
@@ -50,10 +54,18 @@ class App extends Component {
   }
 
   getWeeklyData() {
-    const { weeklyUnansweredCalls, weeklyAnsweredCalls } = getDataFromWeeklyFiles();
+    const { unansweredCalls, answeredCalls } = getDataFromFiles(7);
     this.setState({
-      weeklyUnansweredCalls,
-      weeklyAnsweredCalls,
+      weeklyUnansweredCalls: unansweredCalls,
+      weeklyAnsweredCalls: answeredCalls,
+    });
+  }
+
+  getMonthlyData() {
+    const { unansweredCalls, answeredCalls } = getDataFromFiles(30);
+    this.setState({
+      monthlyUnansweredCalls: unansweredCalls,
+      monthlyAnsweredCalls: answeredCalls,
     });
   }
 
@@ -90,6 +102,8 @@ class App extends Component {
       dailyAnsweredCalls,
       weeklyUnansweredCalls,
       weeklyAnsweredCalls,
+      monthlyUnansweredCalls,
+      monthlyAnsweredCalls,
     } = this.state;
     return (
       <>
@@ -130,7 +144,12 @@ class App extends Component {
             answeredData={weeklyAnsweredCalls}
           />
         </TabPanel>
-        <TabPanel active={activeTab === '30D'}>30D</TabPanel>
+        <TabPanel active={activeTab === '30D'}>
+          <MonthlyChart
+            unansweredData={monthlyUnansweredCalls}
+            answeredData={monthlyAnsweredCalls}
+          />
+        </TabPanel>
         <GlobalStyle />
       </>
     );
