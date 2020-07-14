@@ -13,7 +13,6 @@ function generateWeeklyLabels() {
 }
 
 const WeeklyChart = props => {
-  console.log(props);
   const data = {
     labels: generateWeeklyLabels(),
     datasets: [
