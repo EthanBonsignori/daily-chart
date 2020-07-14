@@ -1,11 +1,11 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { weeklyOptions } from '../config/chartOptions';
-import { generateWeeklyFilenames } from '../utils/fileUtils';
+import { generateFilenames } from '../utils/fileUtils';
 
 function generateWeeklyLabels() {
   const weeklyLabels = [];
-  const weeklyFiles = generateWeeklyFilenames();
+  const weeklyFiles = generateFilenames(7);
   for (let i = 0; i < weeklyFiles.length; i += 1) {
     weeklyLabels.push(weeklyFiles[i].slice(0, -10));
   }
