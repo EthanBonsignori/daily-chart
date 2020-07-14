@@ -4,6 +4,7 @@ import moment from 'moment';
 import GlobalStyle from '../config/GlobalStyle';
 import DailyChart from './DailyChart';
 import { readDataFromFile, writeDataToFile } from '../utils/fileUtils';
+import { isEmptyObj } from '../utils/helpers';
 
 class App extends Component {
   constructor() {
@@ -41,38 +42,22 @@ class App extends Component {
 
   handleAddCall = event => {
     const typeOfCall = event.target.name;
-    const { unansweredData, answeredData } = this.state;
-    const numOfUnansweredCalls = unansweredData.length;
-    const numOfAnsweredCalls = answeredData.length;
-    let newCall = {
+    const existingData = readDataFromFile();
+    const newCallData = {
       type: typeOfCall,
       x: moment(),
       y: 1,
     };
-    switch (typeOfCall) {
-    case 'unanswered':
-      if (numOfUnansweredCalls <= 0) {
-        return writeDataToFile(newCall);
-      }
-      newCall = [{
-        ...newCall,
-        y: numOfUnansweredCalls,
-      }];
-      return writeDataToFile([...unansweredData, newCall]);
-    case 'answered':
-      if (numOfAnsweredCalls <= 0) {
-        return writeDataToFile(newCall);
-      }
-      newCall = {
-        ...newCall,
-        y: numOfAnsweredCalls,
-      };
-      return writeDataToFile([...answeredData, newCall]);
-    default:
-      return writeDataToFile(newCall);
+    let toBeWrittenData = [newCallData];
+    if (!isEmptyObj(existingData)) {
+      /* eslint-disable-next-line */
+      const numOfCalls = existingData.reduce((acc, cur) => (cur.type === typeOfCall ? ++acc : acc), 0) + 1;
+      newCallData.y = numOfCalls;
+      toBeWrittenData = [...existingData, newCallData];
     }
 
-    // return this.getDailyData();
+    writeDataToFile(toBeWrittenData);
+    return this.getDailyData();
   }
 
   handleActiveTab = event => {
