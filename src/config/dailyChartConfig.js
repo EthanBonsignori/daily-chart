@@ -1,24 +1,5 @@
 import moment from 'moment';
 
-export const dailyDatasets = [
-  {
-    label: 'Unanswered',
-    backgroundColor: ['rgba(255, 99, 132, 0.2)'],
-    borderColor: ['rgba(255, 99, 132, 1)'],
-    pointBorderColor: 'rgba(255, 99, 132, 1)',
-    pointBackgroundColor: 'rgba(179, 52, 79, 1)',
-    data: [],
-  },
-  {
-    label: 'Answered',
-    backgroundColor: ['rgba(99, 255, 124, 0.2)'],
-    borderColor: ['rgba(99, 255, 124, 1)'],
-    pointBorderColor: 'rgba(99, 255, 124, 1)',
-    pointBackgroundColor: 'rgba(99, 255, 124, 0.2)',
-    data: [],
-  },
-];
-
 export const dailyOptions = {
   title: {
     display: true,
@@ -53,3 +34,5 @@ export const dailyOptions = {
     }],
   },
 };
+
+export const weeklyOptions = 'placeholder';

@@ -1,21 +1,16 @@
-import fs from 'fs';
 import React, { Component } from 'react';
-// import moment from 'moment';
 import styled, { keyframes } from 'styled-components';
 import GlobalStyle from '../config/GlobalStyle';
 import DailyChart from './DailyChart';
-import {
-  dailyDatasets,
-  dailyOptions,
-} from '../config/dailyChartConfig';
-import { FILE_PATH } from '../utils/constants';
+import { readDataFromFile } from '../utils/fileUtils';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       activeTab: '1D',
-      dailyData: { datasets: dailyDatasets },
+      answeredData: [],
+      unansweredData: [],
     };
   }
 
@@ -26,17 +21,8 @@ class App extends Component {
   getDailyData() {
     const unansweredData = [];
     const answeredData = [];
-    let data = {};
-    if (!fs.existsSync(FILE_PATH)) {
-      return console.info('No file for today exists yet. One will be created when data is added.');
-    }
-    const dataFromFile = fs.readFileSync(FILE_PATH, 'utf8', (err) => {
-      if (err) {
-        return console.error('Error reading file from data director.', err);
-      }
-      data = JSON.parse(dataFromFile);
-      return data;
-    });
+    const data = readDataFromFile();
+    if (!data) return;
     for (let i = 0; i < data.length; i += 1) {
       const { type, x, y } = data[i];
       if (type === 'unanswered') {
@@ -47,27 +33,9 @@ class App extends Component {
       }
     }
 
-    return this.setState({
-      dailyData: {
-        datasets: [
-          {
-            label: 'Unanswered',
-            backgroundColor: ['rgba(255, 99, 132, 0.2)'],
-            borderColor: ['rgba(255, 99, 132, 1)'],
-            pointBorderColor: 'rgba(255, 99, 132, 1)',
-            pointBackgroundColor: 'rgba(179, 52, 79, 1)',
-            data: unansweredData,
-          },
-          {
-            label: 'Answered',
-            backgroundColor: ['rgba(99, 255, 124, 0.2)'],
-            borderColor: ['rgba(99, 255, 124, 1)'],
-            pointBorderColor: 'rgba(99, 255, 124, 1)',
-            pointBackgroundColor: 'rgba(99, 255, 124, 0.2)',
-            data: answeredData,
-          },
-        ],
-      },
+    this.setState({
+      unansweredData,
+      answeredData,
     });
   }
 
@@ -78,7 +46,11 @@ class App extends Component {
   }
 
   render() {
-    const { activeTab, dailyData } = this.state;
+    const {
+      activeTab,
+      unansweredData,
+      answeredData,
+    } = this.state;
     return (
       <>
         <Tabs>
@@ -105,7 +77,10 @@ class App extends Component {
           </Tab>
         </Tabs>
         <TabPanel active={activeTab === '1D'}>
-          <DailyChart data={dailyData} options={dailyOptions} />
+          <DailyChart
+            unansweredData={unansweredData}
+            answeredData={answeredData}
+          />
         </TabPanel>
         <TabPanel active={activeTab === '7D'}>7D</TabPanel>
         <TabPanel active={activeTab === '30D'}>30D</TabPanel>
