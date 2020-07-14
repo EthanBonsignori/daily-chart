@@ -6,7 +6,7 @@ import { getNumOfCallFromType } from './helpers';
 export const readDataFromFile = () => {
   let data = {};
   if (!fs.existsSync(DAILY_FILE_PATH)) {
-    console.info('No file for today exists. One will be created when data is added.');
+    console.info(`No file exists at ${DAILY_FILE_PATH}. \nOne will be created when any data is added.`);
     return data;
   }
   const rawData = fs.readFileSync(DAILY_FILE_PATH, 'utf8');
