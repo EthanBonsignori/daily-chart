@@ -1,4 +1,4 @@
 node_modules
 dist
-src/data/*
-!src/data/EXAMPLE_DATA.json
+static/data/*
+!static/data/EXAMPLE_DATA.json
