@@ -48,8 +48,30 @@ export const weeklyOptions = {
       stacked: true,
       ticks: {
         reverse: true,
-        maxRotation: 90,
-        minRotation: 80,
+      },
+    }],
+    yAxes: [{
+      stacked: true,
+      ticks: {
+        beginAtZero: false,
+      },
+    }],
+  },
+};
+
+export const monthlyOptions = {
+  title: {
+    display: true,
+    text: `Calls to Unemployment from ${moment().subtract(29, 'days').format('MM/DD')} to ${moment().format('MM/DD')}`,
+  },
+  legend: {
+    display: false,
+  },
+  scales: {
+    xAxes: [{
+      stacked: true,
+      ticks: {
+        reverse: true,
       },
     }],
     yAxes: [{
