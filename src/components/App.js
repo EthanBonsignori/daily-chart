@@ -1,4 +1,3 @@
-import fs from 'fs';
 import React, { Component } from 'react';
 import moment from 'moment';
 import DailyChart from './DailyChart';
