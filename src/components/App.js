@@ -21,6 +21,10 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.updateCharts();
+  }
+
+  updateCharts() {
     this.getDailyData();
     this.getWeeklyData();
   }
@@ -47,7 +51,6 @@ class App extends Component {
 
   getWeeklyData() {
     const { weeklyUnansweredCalls, weeklyAnsweredCalls } = getDataFromWeeklyFiles();
-    console.log(weeklyUnansweredCalls);
     this.setState({
       weeklyUnansweredCalls,
       weeklyAnsweredCalls,
@@ -71,7 +74,7 @@ class App extends Component {
     }
 
     writeDataToFile(toBeWrittenData);
-    return this.getDailyData();
+    this.updateCharts();
   }
 
   handleActiveTab = event => {
