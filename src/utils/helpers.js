@@ -5,4 +5,7 @@ export const isEmptyObj = obj => {
   return false;
 };
 
-export const placeholder = '';
+export const removeTypeProperty = arr => arr.map(obj => ({
+  x: obj.x,
+  y: obj.y,
+}));
