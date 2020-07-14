@@ -2,19 +2,19 @@ import fs from 'fs';
 import { FILE_PATH } from './constants';
 
 export const readDataFromFile = () => {
+  let data = {};
   if (!fs.existsSync(FILE_PATH)) {
-    return console.info('No file for today exists yet. One will be created when data is added.');
+    console.info('No file for today exists yet. One will be created when data is added.');
+    return data;
   }
-  const data = fs.readFile(FILE_PATH, 'utf8', (err, rawData) => {
-    if (err) {
-      return console.error('Error reading file from data directory.', err);
-    }
-    const parsedData = JSON.parse(rawData);
-    return parsedData;
-  });
+  const rawData = fs.readFileSync(FILE_PATH, 'utf8');
+  data = JSON.parse(rawData);
   return data;
 };
 
 export const writeDataToFile = data => {
-  fs.writeFile(FILE_PATH, JSON.stringify(data, null, 2));
+  const finished = err => {
+    if (err) console.error(err);
+  };
+  fs.writeFileSync(FILE_PATH, JSON.stringify(data, null, 2), finished);
 };
