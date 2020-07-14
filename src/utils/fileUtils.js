@@ -15,4 +15,6 @@ export const readDataFromFile = () => {
   return data;
 };
 
-export const placeholder = '';
+export const writeDataToFile = data => {
+  fs.writeFile(FILE_PATH, JSON.stringify(data, null, 2));
+};

@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
+import moment from 'moment';
 import GlobalStyle from '../config/GlobalStyle';
 import DailyChart from './DailyChart';
-import { readDataFromFile } from '../utils/fileUtils';
+import { readDataFromFile, writeDataToFile } from '../utils/fileUtils';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       activeTab: '1D',
-      answeredData: [],
       unansweredData: [],
+      answeredData: [],
     };
   }
 
@@ -32,11 +33,46 @@ class App extends Component {
         answeredData.push({ x, y });
       }
     }
-
     this.setState({
       unansweredData,
       answeredData,
     });
+  }
+
+  handleAddCall = event => {
+    const typeOfCall = event.target.name;
+    const { unansweredData, answeredData } = this.state;
+    const numOfUnansweredCalls = unansweredData.length;
+    const numOfAnsweredCalls = answeredData.length;
+    let newCall = {
+      type: typeOfCall,
+      x: moment(),
+      y: 1,
+    };
+    switch (typeOfCall) {
+    case 'unanswered':
+      if (numOfUnansweredCalls <= 0) {
+        return writeDataToFile(newCall);
+      }
+      newCall = [{
+        ...newCall,
+        y: numOfUnansweredCalls,
+      }];
+      return writeDataToFile([...unansweredData, newCall]);
+    case 'answered':
+      if (numOfAnsweredCalls <= 0) {
+        return writeDataToFile(newCall);
+      }
+      newCall = {
+        ...newCall,
+        y: numOfAnsweredCalls,
+      };
+      return writeDataToFile([...answeredData, newCall]);
+    default:
+      return writeDataToFile(newCall);
+    }
+
+    // return this.getDailyData();
   }
 
   handleActiveTab = event => {
@@ -81,6 +117,14 @@ class App extends Component {
             unansweredData={unansweredData}
             answeredData={answeredData}
           />
+          <AddCall
+            name='unanswered'
+            onClick={this.handleAddCall}
+          >Add Unanswered Call</AddCall>
+          <AddCall
+            name='answered'
+            onClick={this.handleAddCall}
+          >Add Answered Call</AddCall>
         </TabPanel>
         <TabPanel active={activeTab === '7D'}>7D</TabPanel>
         <TabPanel active={activeTab === '30D'}>30D</TabPanel>
@@ -119,6 +163,33 @@ const TabPanel = styled.div`
   display: ${props => (props.active ? 'block' : 'none')};
   padding: 6px 12px;
   animation: ${fade} 0.5s;
+`;
+
+const AddCall = styled.a`
+  display: inline-block;
+  cursor: pointer;
+  padding: 0.35em 1.2em;
+  margin:0 0.3em 0.3em 0;
+  border-radius:0.12em;
+  box-sizing: border-box;
+  text-decoration:none;
+  
+  font-weight:300;
+  color:#FFFFFF;
+  text-align:center;
+  transition: all 0.2s;
+
+  border: ${props => (props.name === 'unanswered'
+    ? '0.1em solid rgba(255, 99, 132, 1);'
+    : '0.1em solid rgba(99, 255, 124, 1);'
+  )};
+
+  &:hover {
+    background-color: ${props => (props.name === 'unanswered'
+    ? 'rgba(255, 99, 132, 0.2);'
+    : 'rgba(99, 255, 124, 0.2)'
+  )};
+  }
 `;
 
 export default App;
