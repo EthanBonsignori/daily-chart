@@ -1,43 +1,57 @@
+import fs from 'fs';
 import React, { Component } from 'react';
 import moment from 'moment';
+import DailyChart from './DailyChart';
+import WeeklyChart from './WeeklyChart';
+import AddCallButton from './AddCallButton';
 import GlobalStyle from '../config/GlobalStyle';
 import { TabContainer, Tab, TabPanel } from './Tabs';
-import AddCallButton from './AddCallButton';
-import DailyChart from './DailyChart';
-import { readDataFromFile, writeDataToFile } from '../utils/fileUtils';
-import { isEmptyObj } from '../utils/helpers';
+import { readDataFromFile, writeDataToFile, getDataFromWeeklyFiles } from '../utils/fileUtils';
+import { isEmptyObj, getNumOfCallFromType } from '../utils/helpers';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       activeTab: '1D',
-      unansweredData: [],
-      answeredData: [],
+      dailyUnansweredCalls: [],
+      dailyAnsweredCalls: [],
+      weeklyUnansweredCalls: [],
+      weeklyAnsweredCalls: [],
     };
   }
 
   componentDidMount() {
     this.getDailyData();
+    this.getWeeklyData();
   }
 
   getDailyData() {
-    const unansweredData = [];
-    const answeredData = [];
+    const dailyUnansweredCalls = [];
+    const dailyAnsweredCalls = [];
     const data = readDataFromFile();
     if (!data) return;
     for (let i = 0; i < data.length; i += 1) {
       const { type, x, y } = data[i];
       if (type === 'unanswered') {
-        unansweredData.push({ x, y });
+        dailyUnansweredCalls.push({ x, y });
       }
       if (type === 'answered') {
-        answeredData.push({ x, y });
+        dailyAnsweredCalls.push({ x, y });
       }
     }
     this.setState({
-      unansweredData,
-      answeredData,
+      dailyUnansweredCalls,
+      dailyAnsweredCalls,
+    });
+  }
+
+  getWeeklyData() {
+    const { weeklyUnansweredCalls, weeklyAnsweredCalls } = getDataFromWeeklyFiles();
+    console.log(weeklyUnansweredCalls);
+    this.setState({
+      weeklyUnansweredCalls,
+      weeklyAnsweredCalls,
     });
   }
 
@@ -52,7 +66,7 @@ class App extends Component {
     let toBeWrittenData = [newCallData];
     if (!isEmptyObj(existingData)) {
       /* eslint-disable-next-line */
-      const numOfCalls = existingData.reduce((acc, cur) => (cur.type === typeOfCall ? ++acc : acc), 0) + 1;
+      const numOfCalls = getNumOfCallFromType(existingData, typeOfCall)
       newCallData.y = numOfCalls;
       toBeWrittenData = [...existingData, newCallData];
     }
@@ -70,8 +84,10 @@ class App extends Component {
   render() {
     const {
       activeTab,
-      unansweredData,
-      answeredData,
+      dailyUnansweredCalls,
+      dailyAnsweredCalls,
+      weeklyUnansweredCalls,
+      weeklyAnsweredCalls,
     } = this.state;
     return (
       <>
@@ -100,13 +116,18 @@ class App extends Component {
         </TabContainer>
         <TabPanel active={activeTab === '1D'}>
           <DailyChart
-            unansweredData={unansweredData}
-            answeredData={answeredData}
+            unansweredData={dailyUnansweredCalls}
+            answeredData={dailyAnsweredCalls}
           />
           <AddCallButton name='unanswered' onClick={this.handleAddCall}>Add Unanswered Call</AddCallButton>
           <AddCallButton name='answered' onClick={this.handleAddCall}>Add Answered Call</AddCallButton>
         </TabPanel>
-        <TabPanel active={activeTab === '7D'}>7D</TabPanel>
+        <TabPanel active={activeTab === '7D'}>
+          <WeeklyChart
+            unansweredData={weeklyUnansweredCalls}
+            answeredData={weeklyAnsweredCalls}
+          />
+        </TabPanel>
         <TabPanel active={activeTab === '30D'}>30D</TabPanel>
         <GlobalStyle />
       </>

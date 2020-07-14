@@ -5,6 +5,10 @@ export const isEmptyObj = obj => {
   return false;
 };
 
+export const getNumOfCallFromType = (arr, typeOfCall) =>
+  /* eslint-disable-next-line */
+   arr.reduce((acc, cur) => (cur.type === typeOfCall ? ++acc : acc), 0) + 1;
+
 export const removeTypeProperty = arr => arr.map(obj => ({
   x: obj.x,
   y: obj.y,
