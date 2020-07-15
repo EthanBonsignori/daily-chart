@@ -11,14 +11,14 @@ const WeeklyChart = props => {
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 1,
-        data: props.unansweredData,
+        data: props.dataset1,
       },
       {
         label: 'Answered Calls',
         backgroundColor: 'rgba(99, 255, 124, 0.2)',
         borderColor: 'rgba(99, 255, 124, 1)',
         borderWidth: 1,
-        data: props.answeredData,
+        data: props.dataset2,
       },
     ],
   };

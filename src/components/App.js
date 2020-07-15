@@ -34,10 +34,11 @@ class App extends Component {
       dailyDataset1: [],
       dailyDataset2: [],
       weeklyLabels: [],
-      weeklyUnansweredCalls: [],
-      weeklyAnsweredCalls: [],
-      monthlyUnansweredCalls: [],
-      monthlyAnsweredCalls: [],
+      weeklyDataset1: [],
+      weeklyDataset2: [],
+      monthlyLabels: [],
+      monthlyDataset1: [],
+      monthlyDataset2: [],
       userSettings: {
         hideWeekends: false,
       },
@@ -72,36 +73,38 @@ class App extends Component {
   }
 
   getWeeklyData() {
-    const { unansweredCalls, answeredCalls } = getDataFromFiles(7);
+    const { dataset1, dataset2 } = getDataFromFiles(7);
     const weeklyLabels = generateChartLabels(7);
     this.setState({
-      weeklyUnansweredCalls: unansweredCalls,
-      weeklyAnsweredCalls: answeredCalls,
+      weeklyDataset1: dataset1,
+      weeklyDataset2: dataset2,
       weeklyLabels,
     });
   }
 
   getMonthlyData() {
-    const { unansweredCalls, answeredCalls } = getDataFromFiles(30);
+    const { dataset1, dataset2 } = getDataFromFiles(30);
+    const monthlyLabels = generateChartLabels(30);
     this.setState({
-      monthlyUnansweredCalls: unansweredCalls,
-      monthlyAnsweredCalls: answeredCalls,
+      monthlyDataset1: dataset1,
+      monthlyDataset2: dataset2,
+      monthlyLabels,
     });
   }
 
   handleAddData = event => {
-    const typeOfCall = event.target.name;
+    const typeOfData = event.target.name;
     const { data } = getDailyDataFromFile();
-    const newCallData = {
-      type: typeOfCall,
+    const newDataPoint = {
+      type: typeOfData,
       x: moment(),
       y: 1,
     };
-    let toBeWrittenData = [newCallData];
+    let toBeWrittenData = [newDataPoint];
     if (!isEmptyObj(data)) {
-      const numOfCalls = countPropertyInArrOfObj(data, typeOfCall);
-      newCallData.y = numOfCalls;
-      toBeWrittenData = [...data, newCallData];
+      const newDataPointY = countPropertyInArrOfObj(data, typeOfData);
+      newDataPoint.y = newDataPointY;
+      toBeWrittenData = [...data, newDataPoint];
     }
     writeDataToFile(toBeWrittenData);
     this.updateCharts();
@@ -126,13 +129,13 @@ class App extends Component {
       dailyDataset1,
       dailyDataset2,
       weeklyLabels,
-      weeklyUnansweredCalls,
-      weeklyAnsweredCalls,
-      monthlyUnansweredCalls,
-      monthlyAnsweredCalls,
+      weeklyDataset1,
+      weeklyDataset2,
+      monthlyLabels,
+      monthlyDataset1,
+      monthlyDataset2,
       userSettings,
     } = this.state;
-    console.log('user settings in render: ', userSettings);
     return (
       <>
         <TabContainer>
@@ -163,20 +166,21 @@ class App extends Component {
             unansweredData={dailyDataset1}
             answeredData={dailyDataset2}
           />
-          <AddDataButton name='unanswered' onClick={this.handleAddData}>Add Unanswered Call</AddDataButton>
-          <AddDataButton name='answered' onClick={this.handleAddData}>Add Answered Call</AddDataButton>
+          <AddDataButton name='dataset1' onClick={this.handleAddData}>Add Unanswered Call</AddDataButton>
+          <AddDataButton name='dataset2' onClick={this.handleAddData}>Add Answered Call</AddDataButton>
         </TabPanel>
         <TabPanel active={activeTab === '7D'}>
           <WeeklyChart
             labels={weeklyLabels}
-            unansweredData={weeklyUnansweredCalls}
-            answeredData={weeklyAnsweredCalls}
+            dataset1={weeklyDataset1}
+            dataset2={weeklyDataset2}
           />
         </TabPanel>
         <TabPanel active={activeTab === '30D'}>
           <MonthlyChart
-            unansweredData={monthlyUnansweredCalls}
-            answeredData={monthlyAnsweredCalls}
+            labels={monthlyLabels}
+            dataset1={monthlyDataset1}
+            dataset2={monthlyDataset2}
           />
         </TabPanel>
         <label>

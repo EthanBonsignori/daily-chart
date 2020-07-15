@@ -40,22 +40,22 @@ export const writeDataToFile = data => {
 };
 
 export const getDataFromFiles = days => {
-  const unansweredCalls = [];
-  const answeredCalls = [];
+  const dataset1 = [];
+  const dataset2 = [];
   const filenames = generateFilenames(days);
   for (let i = 0; i < filenames.length; i += 1) {
     if (fs.existsSync(`${DATA_FILE_DIR}/${filenames[i]}`)) {
       const dayData = fs.readFileSync(`${DATA_FILE_DIR}/${filenames[i]}`, 'utf8');
       const parsedDayData = JSON.parse(dayData);
-      unansweredCalls.push(countPropertyInArrOfObj(parsedDayData, 'unanswered') - 1);
-      answeredCalls.push(countPropertyInArrOfObj(parsedDayData, 'answered') - 1);
+      dataset1.push(countPropertyInArrOfObj(parsedDayData, 'unanswered') - 1);
+      dataset2.push(countPropertyInArrOfObj(parsedDayData, 'answered') - 1);
     } else {
-      unansweredCalls.push(0);
-      answeredCalls.push(0);
+      dataset1.push(0);
+      dataset2.push(0);
     }
   }
   return {
-    unansweredCalls,
-    answeredCalls,
+    dataset1,
+    dataset2,
   };
 };
