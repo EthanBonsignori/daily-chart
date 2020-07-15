@@ -5,11 +5,6 @@ export const isEmptyObj = obj => {
   return false;
 };
 
-export const getNumOfCallFromType = (arr, typeOfCall) =>
+export const countPropertyInArrOfObj = (arr, type) =>
   /* eslint-disable-next-line */
-   arr.reduce((acc, cur) => (cur.type === typeOfCall ? ++acc : acc), 0);
-
-export const removeTypeProperty = arr => arr.map(obj => ({
-  x: obj.x,
-  y: obj.y,
-}));
+   arr.reduce((acc, cur) => (cur.type === type ? ++acc : acc), 0);
