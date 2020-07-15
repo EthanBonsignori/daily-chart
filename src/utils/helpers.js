@@ -7,4 +7,4 @@ export const isEmptyObj = obj => {
 
 export const countPropertyInArrOfObj = (arr, type) =>
   /* eslint-disable-next-line */
-   arr.reduce((acc, cur) => (cur.type === type ? ++acc : acc), 0);
+   arr.reduce((acc, cur) => (cur.type === type ? ++acc : acc), 0 + 1);
