@@ -25,6 +25,7 @@
     ]
   },
   "dependencies": {
+    "@babel/runtime": "^7.10.5",
     "chart.js": "^2.9.3",
     "electron": "^9.1.0",
     "electron-devtools-installer": "^3.1.0",
@@ -40,6 +41,7 @@
     "@babel/core": "^7.10.4",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-syntax-class-properties": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
     "babel-eslint": "^10.1.0",
