@@ -1,27 +1,29 @@
 import moment from 'moment';
+import { userSettings } from '../config/userSettings';
 
 export const generateFilenames = days => {
   const filenames = [];
-  for (let i = 0; i < days; i += 1) {
+  let i = 0;
+  while (filenames.length < days) {
     const filenameDate = moment().subtract(i, 'days').format('MM-DD-YYYY');
     const dayOfTheWeek = moment(filenameDate).isoWeekday();
-    console.log(dayOfTheWeek);
-    if (true && dayOfTheWeek !== 6 && dayOfTheWeek !== 7) {
+    if (userSettings.hideWeekends && dayOfTheWeek !== 6 && dayOfTheWeek !== 7) {
       filenames.push(`${filenameDate}.json`);
-    } else {
+    } else if (!userSettings.hideWeekends) {
       filenames.push(`${filenameDate}.json`);
     }
+    i += 1;
   }
   return filenames;
 };
 
-export const generateChartLabels = numberOfDays => {
-  const monthlyLabels = [];
-  const monthlyFiles = generateFilenames(numberOfDays);
-  for (let i = 0; i < monthlyFiles.length; i += 1) {
-    monthlyLabels.push(monthlyFiles[i].slice(0, -10));
+export const generateChartLabels = days => {
+  const labels = [];
+  const filenames = generateFilenames(days);
+  for (let i = 0; i < filenames.length; i += 1) {
+    labels.push(filenames[i].slice(0, -10));
   }
-  return monthlyLabels;
+  return labels;
 };
 
 export const removeTypeProperty = arr => arr.map(obj => ({
