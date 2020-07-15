@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import Switch from 'react-switch';
 import DailyChart from './DailyChart';
 import WeeklyChart from './WeeklyChart';
 import MonthlyChart from './MonthlyChart';
@@ -31,6 +32,7 @@ class App extends Component {
       weeklyAnsweredCalls: [],
       monthlyUnansweredCalls: [],
       monthlyAnsweredCalls: [],
+      weekendIsChecked: false,
     };
   }
 
@@ -106,6 +108,12 @@ class App extends Component {
     });
   }
 
+  handleSwitchToggle = (checked, event, id) => {
+    this.setState({
+      [id]: checked,
+    });
+  }
+
   render() {
     const {
       activeTab,
@@ -148,6 +156,16 @@ class App extends Component {
           />
           <AddDataButton name='unanswered' onClick={this.handleAddData}>Add Unanswered Call</AddDataButton>
           <AddDataButton name='answered' onClick={this.handleAddData}>Add Answered Call</AddDataButton>
+          <label>
+            Show weekend dates?
+            <Switch
+              id='weekendIsChecked'
+              onChange={this.handleSwitchToggle}
+              checked={this.state.weekendIsChecked}
+              offColor='#858585'
+              onColor='#4abd5c'
+            />
+          </label>
         </TabPanel>
         <TabPanel active={activeTab === '7D'}>
           <WeeklyChart
