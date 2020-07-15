@@ -7,12 +7,16 @@ import MonthlyChart from './MonthlyChart';
 import AddDataButton from './AddDataButton';
 import GlobalStyle from '../config/GlobalStyle';
 import {
+  writeUserSettingsToFile,
+  getUserSettingsFromFile,
+} from '../config/userSettings';
+import {
   TabContainer,
   Tab,
   TabPanel,
 } from './Tabs';
 import {
-  readDataFromFile,
+  getDailyDataFromFile,
   writeDataToFile,
   getDataFromFiles,
 } from '../utils/fileUtils';
@@ -20,23 +24,36 @@ import {
   isEmptyObj,
   countPropertyInArrOfObj,
 } from '../utils/helpers';
+import { generateChartLabels } from '../utils/chartUtils';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       activeTab: '1D',
-      dailyUnansweredCalls: [],
-      dailyAnsweredCalls: [],
+      dailyDataset1: [],
+      dailyDataset2: [],
+      weeklyLabels: [],
       weeklyUnansweredCalls: [],
       weeklyAnsweredCalls: [],
       monthlyUnansweredCalls: [],
       monthlyAnsweredCalls: [],
-      weekendIsChecked: false,
+      userSettings: {
+        hideWeekends: false,
+      },
     };
   }
 
   componentDidMount() {
+    this.updateUserSettingsState();
+  }
+
+  updateUserSettingsState() {
+    const userSettings = getUserSettingsFromFile();
+    this.setState(prevState => ({
+      ...prevState.userSettings,
+      userSettings,
+    }));
     this.updateCharts();
   }
 
@@ -47,30 +64,20 @@ class App extends Component {
   }
 
   getDailyData() {
-    const dailyUnansweredCalls = [];
-    const dailyAnsweredCalls = [];
-    const data = readDataFromFile();
-    if (!data) return;
-    for (let i = 0; i < data.length; i += 1) {
-      const { type, x, y } = data[i];
-      if (type === 'unanswered') {
-        dailyUnansweredCalls.push({ x, y });
-      }
-      if (type === 'answered') {
-        dailyAnsweredCalls.push({ x, y });
-      }
-    }
+    const { dailyDataset1, dailyDataset2 } = getDailyDataFromFile();
     this.setState({
-      dailyUnansweredCalls,
-      dailyAnsweredCalls,
+      dailyDataset1,
+      dailyDataset2,
     });
   }
 
   getWeeklyData() {
     const { unansweredCalls, answeredCalls } = getDataFromFiles(7);
+    const weeklyLabels = generateChartLabels(7);
     this.setState({
       weeklyUnansweredCalls: unansweredCalls,
       weeklyAnsweredCalls: answeredCalls,
+      weeklyLabels,
     });
   }
 
@@ -84,20 +91,18 @@ class App extends Component {
 
   handleAddData = event => {
     const typeOfCall = event.target.name;
-    const existingData = readDataFromFile();
+    const { data } = getDailyDataFromFile();
     const newCallData = {
       type: typeOfCall,
       x: moment(),
       y: 1,
     };
     let toBeWrittenData = [newCallData];
-    if (!isEmptyObj(existingData)) {
-      /* eslint-disable-next-line */
-      const numOfCalls = countPropertyInArrOfObj(existingData, typeOfCall)
+    if (!isEmptyObj(data)) {
+      const numOfCalls = countPropertyInArrOfObj(data, typeOfCall);
       newCallData.y = numOfCalls;
-      toBeWrittenData = [...existingData, newCallData];
+      toBeWrittenData = [...data, newCallData];
     }
-
     writeDataToFile(toBeWrittenData);
     this.updateCharts();
   }
@@ -109,21 +114,25 @@ class App extends Component {
   }
 
   handleSwitchToggle = (checked, event, id) => {
-    this.setState({
-      [id]: checked,
-    });
+    const userSettings = { ...this.state.userSettings };
+    userSettings[id] = checked;
+    writeUserSettingsToFile(id, checked);
+    this.updateUserSettingsState();
   }
 
   render() {
     const {
       activeTab,
-      dailyUnansweredCalls,
-      dailyAnsweredCalls,
+      dailyDataset1,
+      dailyDataset2,
+      weeklyLabels,
       weeklyUnansweredCalls,
       weeklyAnsweredCalls,
       monthlyUnansweredCalls,
       monthlyAnsweredCalls,
+      userSettings,
     } = this.state;
+    console.log('user settings in render: ', userSettings);
     return (
       <>
         <TabContainer>
@@ -151,24 +160,15 @@ class App extends Component {
         </TabContainer>
         <TabPanel active={activeTab === '1D'}>
           <DailyChart
-            unansweredData={dailyUnansweredCalls}
-            answeredData={dailyAnsweredCalls}
+            unansweredData={dailyDataset1}
+            answeredData={dailyDataset2}
           />
           <AddDataButton name='unanswered' onClick={this.handleAddData}>Add Unanswered Call</AddDataButton>
           <AddDataButton name='answered' onClick={this.handleAddData}>Add Answered Call</AddDataButton>
-          <label>
-            Show weekend dates?
-            <Switch
-              id='weekendIsChecked'
-              onChange={this.handleSwitchToggle}
-              checked={this.state.weekendIsChecked}
-              offColor='#858585'
-              onColor='#4abd5c'
-            />
-          </label>
         </TabPanel>
         <TabPanel active={activeTab === '7D'}>
           <WeeklyChart
+            labels={weeklyLabels}
             unansweredData={weeklyUnansweredCalls}
             answeredData={weeklyAnsweredCalls}
           />
@@ -179,6 +179,16 @@ class App extends Component {
             answeredData={monthlyAnsweredCalls}
           />
         </TabPanel>
+        <label>
+          <span style={{ color: '#fff' }}>Hide Weekend Dates?</span>
+          <Switch
+            id='hideWeekends'
+            onChange={this.handleSwitchToggle}
+            checked={userSettings.hideWeekends}
+            offColor='#858585'
+            onColor='#4abd5c'
+          />
+        </label>
         <GlobalStyle />
       </>
     );
