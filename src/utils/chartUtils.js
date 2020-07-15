@@ -1,7 +1,8 @@
 import moment from 'moment';
-import { userSettings } from '../config/userSettings';
+import { getUserSettingsFromFile } from '../config/userSettings';
 
 export const generateFilenames = days => {
+  const userSettings = getUserSettingsFromFile();
   const filenames = [];
   let i = 0;
   while (filenames.length < days) {
