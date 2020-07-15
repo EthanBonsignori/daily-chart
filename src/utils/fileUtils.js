@@ -1,7 +1,10 @@
 import fs from 'fs';
-import moment from 'moment';
-import { DAILY_FILE_PATH, DATA_FILE_DIR } from './constants';
-import { getNumOfCallFromType } from './helpers';
+import { countPropertyInArrOfObj } from './helpers';
+import { generateFilenames } from './chartUtils';
+import {
+  DAILY_FILE_PATH,
+  DATA_FILE_DIR,
+} from './constants';
 
 export const readDataFromFile = () => {
   let data = {};
@@ -21,15 +24,6 @@ export const writeDataToFile = data => {
   fs.writeFileSync(DAILY_FILE_PATH, JSON.stringify(data, null, 2), finished);
 };
 
-export const generateFilenames = days => {
-  const filenames = [];
-  for (let i = 0; i < days; i += 1) {
-    const filename = moment().subtract(i, 'days').format('MM-DD-YYYY');
-    filenames.push(`${filename}.json`);
-  }
-  return filenames;
-};
-
 export const getDataFromFiles = days => {
   const unansweredCalls = [];
   const answeredCalls = [];
@@ -38,8 +32,8 @@ export const getDataFromFiles = days => {
     if (fs.existsSync(`${DATA_FILE_DIR}/${filenames[i]}`)) {
       const dayData = fs.readFileSync(`${DATA_FILE_DIR}/${filenames[i]}`, 'utf8');
       const parsedDayData = JSON.parse(dayData);
-      unansweredCalls.push(getNumOfCallFromType(parsedDayData, 'unanswered'));
-      answeredCalls.push(getNumOfCallFromType(parsedDayData, 'answered'));
+      unansweredCalls.push(countPropertyInArrOfObj(parsedDayData, 'unanswered'));
+      answeredCalls.push(countPropertyInArrOfObj(parsedDayData, 'answered'));
     } else {
       unansweredCalls.push(0);
       answeredCalls.push(0);
