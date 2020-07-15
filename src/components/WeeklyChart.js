@@ -1,11 +1,10 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { weeklyOptions } from '../config/chartOptions';
-import { generateChartLabels } from '../utils/chartUtils';
 
 const WeeklyChart = props => {
   const data = {
-    labels: generateChartLabels(7),
+    labels: props.labels,
     datasets: [
       {
         label: 'Unanswered Calls',
