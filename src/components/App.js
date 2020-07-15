@@ -1,13 +1,24 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import { TabContainer, Tab, TabPanel } from './Tabs';
 import DailyChart from './DailyChart';
 import WeeklyChart from './WeeklyChart';
 import MonthlyChart from './MonthlyChart';
-import AddCallButton from './AddCallButton';
+import AddDataButton from './AddDataButton';
 import GlobalStyle from '../config/GlobalStyle';
-import { readDataFromFile, writeDataToFile, getDataFromFiles } from '../utils/fileUtils';
-import { isEmptyObj, getNumOfCallFromType } from '../utils/helpers';
+import {
+  TabContainer,
+  Tab,
+  TabPanel,
+} from './Tabs';
+import {
+  readDataFromFile,
+  writeDataToFile,
+  getDataFromFiles,
+} from '../utils/fileUtils';
+import {
+  isEmptyObj,
+  countPropertyInArrOfObj,
+} from '../utils/helpers';
 
 class App extends Component {
   constructor() {
@@ -69,7 +80,7 @@ class App extends Component {
     });
   }
 
-  handleAddCall = event => {
+  handleAddData = event => {
     const typeOfCall = event.target.name;
     const existingData = readDataFromFile();
     const newCallData = {
@@ -80,7 +91,7 @@ class App extends Component {
     let toBeWrittenData = [newCallData];
     if (!isEmptyObj(existingData)) {
       /* eslint-disable-next-line */
-      const numOfCalls = getNumOfCallFromType(existingData, typeOfCall)
+      const numOfCalls = countPropertyInArrOfObj(existingData, typeOfCall)
       newCallData.y = numOfCalls;
       toBeWrittenData = [...existingData, newCallData];
     }
@@ -135,8 +146,8 @@ class App extends Component {
             unansweredData={dailyUnansweredCalls}
             answeredData={dailyAnsweredCalls}
           />
-          <AddCallButton name='unanswered' onClick={this.handleAddCall}>Add Unanswered Call</AddCallButton>
-          <AddCallButton name='answered' onClick={this.handleAddCall}>Add Answered Call</AddCallButton>
+          <AddDataButton name='unanswered' onClick={this.handleAddData}>Add Unanswered Call</AddDataButton>
+          <AddDataButton name='answered' onClick={this.handleAddData}>Add Answered Call</AddDataButton>
         </TabPanel>
         <TabPanel active={activeTab === '7D'}>
           <WeeklyChart
