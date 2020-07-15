@@ -27,7 +27,7 @@ module.exports = {
   target: 'electron-renderer',
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Call Chart'
+      title: 'Daily Occurences Chart'
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),

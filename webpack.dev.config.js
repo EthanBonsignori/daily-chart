@@ -30,7 +30,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Call Chart'
+      title: 'Daily Occurences Chart'
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
