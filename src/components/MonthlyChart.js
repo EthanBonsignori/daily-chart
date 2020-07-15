@@ -1,20 +1,11 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { monthlyOptions } from '../config/chartOptions';
-import { generateFilenames } from '../utils/fileUtils';
-
-function generateMonthlyLabels() {
-  const monthlyLabels = [];
-  const monthlyFiles = generateFilenames(30);
-  for (let i = 0; i < monthlyFiles.length; i += 1) {
-    monthlyLabels.push(monthlyFiles[i].slice(0, -10));
-  }
-  return monthlyLabels;
-}
+import { generateChartLabels } from '../utils/chartUtils';
 
 const MonthlyChart = props => {
   const data = {
-    labels: generateMonthlyLabels(),
+    labels: generateChartLabels(30),
     datasets: [
       {
         label: 'Unanswered Calls',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 import { dailyOptions } from '../config/chartOptions';
-import { removeTypeProperty } from '../utils/helpers';
+import { removeTypeProperty } from '../utils/chartUtils';
 
 const DailyChart = props => {
   const data = {
