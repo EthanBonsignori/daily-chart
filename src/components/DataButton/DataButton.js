@@ -14,13 +14,13 @@ export default styled.a`
   text-align:center;
   transition: all 0.2s;
 
-  border: ${props => (props.name === 'unanswered'
+  border: ${props => (props.name === 'dataset1'
     ? '0.1em solid rgba(255, 99, 132, 1);'
     : '0.1em solid rgba(99, 255, 124, 1);'
   )};
 
   &:hover {
-    background-color: ${props => (props.name === 'unanswered'
+    background-color: ${props => (props.name === 'dataset1'
     ? 'rgba(255, 99, 132, 0.2);'
     : 'rgba(99, 255, 124, 0.2)'
   )};
