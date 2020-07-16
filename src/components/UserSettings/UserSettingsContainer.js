@@ -7,7 +7,7 @@ export default styled.div`
 
   color: #fff;
   background: #333333;
-  width: 100vw;
+  width: 100%;
   padding: 1rem;
   overflow: hidden;
 `;
