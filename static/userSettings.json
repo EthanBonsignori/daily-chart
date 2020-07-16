@@ -1,3 +1,5 @@
 {
-  "hideWeekends": false
+  "hideWeekends": false,
+  "stacked": false,
+  "hideLegends": false
 }
