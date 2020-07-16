@@ -7,8 +7,8 @@ import {
 } from './constants';
 
 export const getDailyDataFromFile = () => {
-  const dailyDataset1 = [];
-  const dailyDataset2 = [];
+  const dataset1 = [];
+  const dataset2 = [];
   let data = {};
   if (fs.existsSync(DAILY_FILE_PATH)) {
     const rawData = fs.readFileSync(DAILY_FILE_PATH, 'utf8');
@@ -18,16 +18,16 @@ export const getDailyDataFromFile = () => {
   }
   for (let i = 0; i < data.length; i += 1) {
     const { type, x, y } = data[i];
-    if (type === 'unanswered') {
-      dailyDataset1.push({ x, y });
+    if (type === 'dataset1') {
+      dataset1.push({ x, y });
     }
-    if (type === 'answered') {
-      dailyDataset2.push({ x, y });
+    if (type === 'dataset2') {
+      dataset2.push({ x, y });
     }
   }
   return {
-    dailyDataset1,
-    dailyDataset2,
+    dataset1,
+    dataset2,
     data,
   };
 };
@@ -47,8 +47,8 @@ export const getDataFromFiles = days => {
     if (fs.existsSync(`${DATA_FILE_DIR}/${filenames[i]}`)) {
       const dayData = fs.readFileSync(`${DATA_FILE_DIR}/${filenames[i]}`, 'utf8');
       const parsedDayData = JSON.parse(dayData);
-      dataset1.push(countPropertyInArrOfObj(parsedDayData, 'unanswered') - 1);
-      dataset2.push(countPropertyInArrOfObj(parsedDayData, 'answered') - 1);
+      dataset1.push(countPropertyInArrOfObj(parsedDayData, 'dataset1') - 1);
+      dataset2.push(countPropertyInArrOfObj(parsedDayData, 'dataset2') - 1);
     } else {
       dataset1.push(0);
       dataset2.push(0);
