@@ -1,4 +1,6 @@
 node_modules
 dist
+builds
 static/data/*
 !static/data/EXAMPLE_DATA.json
+static/userSettings.json
