@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import Switch from 'react-switch';
 import DailyChart from './DailyChart';
 import WeeklyChart from './WeeklyChart';
 import MonthlyChart from './MonthlyChart';
-import AddDataButton from './AddDataButton';
+import SettingsSwitch from './SettingSwitch';
 import GlobalStyle from '../config/GlobalStyle';
+import {
+  DataButtonContainer,
+  DataButton,
+} from './DataButton';
 import {
   writeUserSettingsToFile,
   getUserSettingsFromFile,
@@ -15,6 +18,11 @@ import {
   Tab,
   TabPanel,
 } from './Tabs';
+import {
+  UserSettingsContainer,
+  UserSettingsTitle,
+  UserSettingsColumn,
+} from './UserSettings';
 import {
   getDailyDataFromFile,
   writeDataToFile,
@@ -41,6 +49,8 @@ class App extends Component {
       monthlyDataset2: [],
       userSettings: {
         hideWeekends: false,
+        hideLegends: false,
+        stacked: true,
       },
     };
   }
@@ -65,10 +75,10 @@ class App extends Component {
   }
 
   getDailyData() {
-    const { dailyDataset1, dailyDataset2 } = getDailyDataFromFile();
+    const { dataset1, dataset2 } = getDailyDataFromFile();
     this.setState({
-      dailyDataset1,
-      dailyDataset2,
+      dailyDataset1: dataset1,
+      dailyDataset2: dataset2,
     });
   }
 
@@ -163,17 +173,22 @@ class App extends Component {
         </TabContainer>
         <TabPanel active={activeTab === '1D'}>
           <DailyChart
-            unansweredData={dailyDataset1}
-            answeredData={dailyDataset2}
+            dataset1={dailyDataset1}
+            dataset2={dailyDataset2}
+            hideLegend={userSettings.hideLegends}
           />
-          <AddDataButton name='dataset1' onClick={this.handleAddData}>Add Unanswered Call</AddDataButton>
-          <AddDataButton name='dataset2' onClick={this.handleAddData}>Add Answered Call</AddDataButton>
+          <DataButtonContainer>
+            <DataButton name='dataset1' onClick={this.handleAddData}>Add Unanswered Call</DataButton>
+            <DataButton name='dataset2' onClick={this.handleAddData}>Add Answered Call</DataButton>
+          </DataButtonContainer>
         </TabPanel>
         <TabPanel active={activeTab === '7D'}>
           <WeeklyChart
             labels={weeklyLabels}
             dataset1={weeklyDataset1}
             dataset2={weeklyDataset2}
+            stacked={userSettings.stacked}
+            hideLegend={userSettings.hideLegends}
           />
         </TabPanel>
         <TabPanel active={activeTab === '30D'}>
@@ -181,18 +196,33 @@ class App extends Component {
             labels={monthlyLabels}
             dataset1={monthlyDataset1}
             dataset2={monthlyDataset2}
+            stacked={userSettings.stacked}
+            hideLegend={userSettings.hideLegends}
           />
         </TabPanel>
-        <label>
-          <span style={{ color: '#fff' }}>Hide Weekend Dates?</span>
-          <Switch
-            id='hideWeekends'
-            onChange={this.handleSwitchToggle}
-            checked={userSettings.hideWeekends}
-            offColor='#858585'
-            onColor='#4abd5c'
-          />
-        </label>
+        <UserSettingsContainer>
+          <UserSettingsTitle>Settings</UserSettingsTitle>
+          <UserSettingsColumn>
+            <SettingsSwitch
+              label='Hide Weekend Dates'
+              id='hideWeekends'
+              onChange={this.handleSwitchToggle}
+              checked={userSettings.hideWeekends}
+            />
+            <SettingsSwitch
+              label='Hide Legend'
+              id='hideLegends'
+              onChange={this.handleSwitchToggle}
+              checked={userSettings.hideLegends}
+            />
+            <SettingsSwitch
+              label='Stacked Bar Charts'
+              id='stacked'
+              onChange={this.handleSwitchToggle}
+              checked={userSettings.stacked}
+            />
+          </UserSettingsColumn>
+        </UserSettingsContainer>
         <GlobalStyle />
       </>
     );
