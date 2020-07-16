@@ -29,7 +29,7 @@ const DailyChart = props => {
     title: {
       display: true,
       text: `Calls to Unemployment on ${moment().format('M/DD/YYYY')}`,
-      fontSize: 18,
+      fontSize: 14,
     },
     legend: {
       display: !props.hideLegend,
