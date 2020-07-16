@@ -7,7 +7,6 @@ const DEV_DIR = '/AppData/Local/Google/Chrome/User Data/Default/Extensions/fmkad
 let mainWindow;
 
 const dev = (process.env.ELECTRON_ENV === 'development');
-console.log(process.env.ELECTRON_ENV);
 
 // Temporary fix for broken high-dpi scale factor on Windows (125% scaling)
 // info: https://github.com/electron/electron/issues/9691
@@ -37,7 +36,7 @@ function createWindow() {
   } else {
     indexPath = url.format({
       protocol: 'file:',
-      pathname: path.join(__dirname, 'dist', 'index.html'),
+      pathname: path.join(__dirname, '..', 'dist', 'index.html'),
       slashes: true,
     });
   }
@@ -50,10 +49,9 @@ function createWindow() {
       mainWindow.webContents.openDevTools();
     }
     if (!dev) {
-      /* eslint-disable no-underscore-dangle */
-      /* eslint-disable global-require */
-      mainWindow.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\');
-      global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\');
+    /* eslint-disable no-underscore-dangle */
+      mainWindow.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\');
+      global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\');
     }
   });
 
