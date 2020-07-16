@@ -7,6 +7,7 @@ const fade = keyframes`
 
 export default styled.div`
   display: ${props => (props.active ? 'block' : 'none')};
+  box-sizing: border-box;
   padding: 6px 12px;
   animation: ${fade} 0.5s;
 `;
