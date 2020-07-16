@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
-import { weeklyOptions } from '../config/chartOptions';
+import moment from 'moment';
 
 const WeeklyChart = props => {
   const data = {
@@ -22,10 +22,37 @@ const WeeklyChart = props => {
       },
     ],
   };
+
+  const firstDay = props.labels[props.labels.length - 1];
+  const lastDay = props.labels[0];
+
+  const options = {
+    title: {
+      display: true,
+      text: `Calls to Unemployment from ${moment(firstDay).format('MM/DD')} to ${moment(lastDay).format('MM/DD')}`,
+    },
+    legend: {
+      display: !props.hideLegend,
+    },
+    scales: {
+      xAxes: [{
+        stacked: props.stacked,
+        ticks: {
+          reverse: true,
+        },
+      }],
+      yAxes: [{
+        stacked: props.stacked,
+        ticks: {
+          beginAtZero: false,
+        },
+      }],
+    },
+  };
   return (
     <Bar
       data={data}
-      options={weeklyOptions}
+      options={options}
     />
   );
 };
