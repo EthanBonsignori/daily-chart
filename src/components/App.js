@@ -10,7 +10,7 @@ import {
   DataButton,
 } from './DataButton';
 import {
-  writeUserSettingsToFile,
+  writeUserSettingToFile,
   getUserSettingsFromFile,
 } from '../config/userSettings';
 import {
@@ -129,7 +129,7 @@ class App extends Component {
   handleSwitchToggle = (checked, event, id) => {
     const userSettings = { ...this.state.userSettings };
     userSettings[id] = checked;
-    writeUserSettingsToFile(id, checked);
+    writeUserSettingToFile(id, checked);
     this.updateUserSettingsState();
   }
 
