@@ -23,13 +23,14 @@ const MonthlyChart = props => {
     ],
   };
 
-  const firstDay = props.labels[props.labels.length - 1];
-  const lastDay = props.labels[0];
+  const firstDay = moment(props.labels[props.labels.length - 1], 'MM-DD').toISOString();
+  const lastDay = moment(props.labels[0], 'MM-DD').toISOString();
 
   const options = {
     title: {
       display: true,
       text: `Calls to Unemployment from ${moment(firstDay).format('MM/DD')} to ${moment(lastDay).format('MM/DD')}`,
+      fontSize: 14,
     },
     legend: {
       display: !props.hideLegend,
