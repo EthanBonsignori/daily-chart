@@ -16,6 +16,7 @@ import {
 } from './DataButton';
 import {
   SettingDisplay,
+  SettingsColumn,
   Setting,
 } from './SettingDisplay';
 import {
@@ -49,13 +50,13 @@ class App extends Component {
       monthlyDataset2: [],
       userSettings: {
         stacked: false,
-        hideWeekends: false,
-        hideLegends: false,
-        hideXAxisLabel: false,
-        hideYAxisLabel: false,
-        hideChartLabel: false,
-        hideDataset1: false,
-        hideDataset2: false,
+        showWeekends: false,
+        showLegends: false,
+        showXAxisLabel: false,
+        showYAxisLabel: false,
+        showChartLabel: false,
+        showDataset1: false,
+        showDataset2: false,
         chartLabel: 'loading',
         dataset1Label: 'loading',
         dataset2Label: 'loading',
@@ -130,8 +131,9 @@ class App extends Component {
   }
 
   handleActiveTab = event => {
+    const { name } = event.target;
     this.setState({
-      activeTab: event.target.name,
+      activeTab: name,
     });
   }
 
@@ -166,13 +168,13 @@ class App extends Component {
 
     const {
       stacked,
-      hideWeekends,
-      hideLegends,
-      hideXAxisLabel,
-      hideYAxisLabel,
-      hideChartLabel,
-      hideDataset1,
-      hideDataset2,
+      showWeekends,
+      showLegends,
+      showXAxisLabel,
+      showYAxisLabel,
+      showChartLabel,
+      showDataset1,
+      showDataset2,
       chartLabel,
       dataset1Label,
       dataset2Label,
@@ -191,13 +193,13 @@ class App extends Component {
             dataset2={dailyDataset2}
             dataset1Label={dataset1Label}
             dataset2Label={dataset2Label}
-            hideDataset1={hideDataset1}
-            hideDataset2={hideDataset2}
+            showDataset1={showDataset1}
+            showDataset2={showDataset2}
             chartLabel={chartLabel}
-            hideChartLabel={hideChartLabel}
-            hideLegend={hideLegends}
-            hideXAxisLabel={hideXAxisLabel}
-            hideYAxisLabel={hideYAxisLabel}
+            showChartLabel={showChartLabel}
+            showLegend={showLegends}
+            showXAxisLabel={showXAxisLabel}
+            showYAxisLabel={showYAxisLabel}
           />
         </TabPanel>
         <TabPanel active={activeTab === '7D'}>
@@ -207,15 +209,15 @@ class App extends Component {
             dataset2={weeklyDataset2}
             dataset1Label={dataset1Label}
             dataset2Label={dataset2Label}
-            hideDataset1={hideDataset1}
-            hideDataset2={hideDataset2}
+            showDataset1={showDataset1}
+            showDataset2={showDataset2}
             stacked={stacked}
             chartLabel={chartLabel}
-            hideChartLabel={hideChartLabel}
-            hideLegend={hideLegends}
-            hideXAxisLabel={hideXAxisLabel}
-            hideYAxisLabel={hideYAxisLabel}
-            hideWeekends={hideWeekends}
+            showChartLabel={showChartLabel}
+            showLegend={showLegends}
+            showXAxisLabel={showXAxisLabel}
+            showYAxisLabel={showYAxisLabel}
+            showWeekends={showWeekends}
           />
         </TabPanel>
         <TabPanel active={activeTab === '30D'}>
@@ -225,14 +227,14 @@ class App extends Component {
             dataset2={monthlyDataset2}
             dataset1Label={dataset1Label}
             dataset2Label={dataset2Label}
-            hideDataset1={hideDataset1}
-            hideDataset2={hideDataset2}
+            showDataset1={showDataset1}
+            showDataset2={showDataset2}
             stacked={stacked}
             chartLabel={chartLabel}
-            hideChartLabel={hideChartLabel}
-            hideLegend={hideLegends}
-            hideXAxisLabel={hideXAxisLabel}
-            hideYAxisLabel={hideYAxisLabel}
+            showChartLabel={showChartLabel}
+            showLegend={showLegends}
+            showXAxisLabel={showXAxisLabel}
+            showYAxisLabel={showYAxisLabel}
           />
         </TabPanel>
         <DataButtonContainer>
@@ -240,38 +242,77 @@ class App extends Component {
           <DataButton name='dataset2' onClick={this.handleAddData}>Add {singular(dataset2Label)}</DataButton>
         </DataButtonContainer>
         <SettingDisplay>
-          <Setting
-            name='Title'
-            subname='plural type of data'
-            inputID='chartLabel'
-            switchID='hideChartLabel'
-            inputValue={chartLabel}
-            checked={hideChartLabel}
-            onChangeInput={this.handleSettingInput}
-            onChangeSwitch={this.handleSettingSwitch}
-          />
-          <Setting
-            name='Dataset 1'
-            subname='i.e. Spam Calls'
-            inputID='dataset1Label'
-            switchID='hideDataset1'
-            inputValue={dataset1Label}
-            checked={hideDataset1}
-            onChangeInput={this.handleSettingInput}
-            onChangeSwitch={this.handleSettingSwitch}
-          />
-          <Setting
-            name='Dataset 2'
-            subname='i.e. Other Calls'
-            inputID='dataset2Label'
-            switchID='hideDataset2'
-            inputValue={dataset2Label}
-            checked={hideDataset2}
-            onChangeInput={this.handleSettingInput}
-            onChangeSwitch={this.handleSettingSwitch}
-          />
+          <SettingsColumn width='60%' leftLabel='Customize Chart'>
+            <Setting
+              type='input'
+              name='Title'
+              subname='plural type of data'
+              id='chartLabel'
+              value={chartLabel}
+              onChange={this.handleSettingInput}
+            />
+            <Setting
+              type='input'
+              name='Dataset 1'
+              subname='i.e. Spam Calls'
+              id='dataset1Label'
+              value={dataset1Label}
+              onChange={this.handleSettingInput}
+            />
+            <Setting
+              type='input'
+              name='Dataset 2'
+              subname='i.e. Other Calls'
+              id='dataset2Label'
+              value={dataset2Label}
+              onChange={this.handleSettingInput}
+            />
+          </SettingsColumn>
+          <SettingsColumn width='40%' rightLabel='Hide/Show'>
+            <Setting
+              type='switch'
+              name='Chart Title'
+              id='showChartLabel'
+              value={showChartLabel}
+              onChange={this.handleSettingSwitch}
+            />
+            <Setting
+              type='switch'
+              name='Weekend Dates'
+              id='showWeekends'
+              value={showWeekends}
+              onChange={this.handleSettingSwitch}
+            />
+            <Setting
+              type='switch'
+              name='Stacked Bars'
+              id='stacked'
+              value={stacked}
+              onChange={this.handleSettingSwitch}
+            />
+            <Setting
+              type='switch'
+              name='Legend'
+              id='showLegends'
+              value={showLegends}
+              onChange={this.handleSettingSwitch}
+            />
+            <Setting
+              type='switch'
+              name='X Axis Label'
+              id='showXAxisLabel'
+              value={showXAxisLabel}
+              onChange={this.handleSettingSwitch}
+            />
+            <Setting
+              type='switch'
+              name='Y Axis Label'
+              id='showYAxisLabel'
+              value={showYAxisLabel}
+              onChange={this.handleSettingSwitch}
+            />
+          </SettingsColumn>
         </SettingDisplay>
-
         <GlobalStyle />
       </>
     );
