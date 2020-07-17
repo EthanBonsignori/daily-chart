@@ -2,12 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 const SettingsColumn = ({
+  width,
   leftLabel,
   centerLabel,
   rightLabel,
   children,
 }) => (
-  <SettingsCol>
+  <SettingsCol width={width}>
     <SettingsColHeader>
       <SettingsColSubtitle align='left'>{leftLabel}</SettingsColSubtitle>
       <SettingsColSubtitle align='center'>{centerLabel}</SettingsColSubtitle>
@@ -18,21 +19,20 @@ const SettingsColumn = ({
 );
 
 const SettingsCol = styled.div`
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: ${props => (props.width)};
+  padding: 10px;
 `;
 
 const SettingsColHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  padding-left: 10px;
 `;
 
 const SettingsColSubtitle = styled.span`
   color: #888;
-  width: 50%;
   margin-bottom: 3px;
   text-align: ${props => (props.align)};
 `;
