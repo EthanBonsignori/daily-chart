@@ -49,7 +49,6 @@ function createWindow() {
       mainWindow.webContents.openDevTools();
     }
     if (!dev) {
-      /* eslint-disable no-underscore-dangle */
       mainWindow.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\');
       global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\');
     }

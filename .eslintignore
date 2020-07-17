@@ -1,3 +1,4 @@
 node_modules
 .gitignore
 webpack.*.js
+src/main.js
