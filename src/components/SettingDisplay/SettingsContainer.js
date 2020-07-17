@@ -5,7 +5,6 @@ export default styled.div`
   flex-direction: row;
   box-sizing: border-box;
   flex-wrap: wrap;
-  
   color: #fff;
   background: #333333;
   width: 100%;

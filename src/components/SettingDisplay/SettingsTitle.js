@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export default styled.span`
-  margin-bottom: 20px;
+  width: 100%;
   margin-left: 5px;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   color: #999;
 `;
