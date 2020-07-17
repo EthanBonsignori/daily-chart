@@ -8,6 +8,6 @@ export default styled.div`
   color: #fff;
   background: #333333;
   width: 100%;
-  padding: 1rem;
+  padding: 1rem 0;
   overflow: hidden;
 `;

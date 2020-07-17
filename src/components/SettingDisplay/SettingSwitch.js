@@ -5,7 +5,7 @@ import Switch from 'react-switch';
 const offColor = '#858585';
 const onColor = '#4abd5c';
 
-const SettingsSwitch = props => (
+const SettingSwitch = props => (
   <SwitchLabel>
     <Switch
       id={props.id}
@@ -21,10 +21,10 @@ const SettingsSwitch = props => (
 );
 
 const SwitchLabel = styled.label`
-  display: flex;
-  align-items: center;
-  margin-left: 10px;
-  margin-bottom: 3px;
+  /* display: flex; */
+  /* align-items: center; */
+  /* margin-left: 10px; */
+  /* margin-bottom: 3px; */
 `;
 
 const SwitchText = styled.span`
@@ -32,4 +32,4 @@ const SwitchText = styled.span`
   margin: 0 10px;
 `;
 
-export default SettingsSwitch;
+export default SettingSwitch;
