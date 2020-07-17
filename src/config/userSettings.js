@@ -1,24 +1,33 @@
 import fs from 'fs';
 import { USER_SETTINGS_PATH } from '../utils/constants';
 
-const finished = err => {
+// Defaults
+let defaultUserSettings = {
+  stacked: false,
+  hideWeekends: false,
+  hideLegends: false,
+  hideXAxisLabel: false,
+  hideYAxisLabel: false,
+  hideChartLabel: false,
+  hideDataset1: false,
+  hideDataset2: false,
+  chartLabel: '[Data Points]',
+  dataset1Label: '[Dataset 1]',
+  dataset2Label: '[Dataset 2]',
+};
+
+const finishedWriting = err => {
   if (err) console.error(err);
 };
 
 export const getUserSettingsFromFile = () => {
-  // Defaults
-  let userSettings = {
-    hideWeekends: true,
-    stacked: true,
-    hideLegends: true,
-  };
   if (fs.existsSync(USER_SETTINGS_PATH)) {
     const rawData = fs.readFileSync(USER_SETTINGS_PATH, 'utf8');
-    userSettings = JSON.parse(rawData);
+    defaultUserSettings = JSON.parse(rawData);
   } else {
-    fs.writeFileSync(USER_SETTINGS_PATH, JSON.stringify(userSettings, null, 2), finished);
+    fs.writeFileSync(USER_SETTINGS_PATH, JSON.stringify(defaultUserSettings, null, 2), finishedWriting);
   }
-  return userSettings;
+  return defaultUserSettings;
 };
 
 export const writeUserSettingToFile = (settingKey, settingValue) => {
@@ -27,7 +36,16 @@ export const writeUserSettingToFile = (settingKey, settingValue) => {
     ...existingUserSettings,
     [settingKey]: settingValue,
   };
-  fs.writeFileSync(USER_SETTINGS_PATH, JSON.stringify(newUserSettings, null, 2), finished);
+  fs.writeFileSync(USER_SETTINGS_PATH, JSON.stringify(newUserSettings, null, 2), finishedWriting);
+};
+
+export const writeUserSettingsToFile = settings => {
+  const existingUserSettings = getUserSettingsFromFile();
+  const newUserSettings = {
+    ...existingUserSettings,
+    ...settings,
+  };
+  fs.writeFileSync(USER_SETTINGS_PATH, JSON.stringify(newUserSettings, null, 2), finishedWriting);
 };
 
 export const userSettings = getUserSettingsFromFile();
