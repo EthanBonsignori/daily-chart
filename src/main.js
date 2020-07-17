@@ -18,7 +18,7 @@ if (process.platform === 'win32') {
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1000,
-    height: 800,
+    height: 850,
     show: false,
     webPreferences: {
       nodeIntegration: true,
@@ -49,7 +49,7 @@ function createWindow() {
       mainWindow.webContents.openDevTools();
     }
     if (!dev) {
-    /* eslint-disable no-underscore-dangle */
+      /* eslint-disable no-underscore-dangle */
       mainWindow.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\');
       global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\');
     }
@@ -60,11 +60,13 @@ function createWindow() {
   });
 }
 
-app.on('ready', async () => {
+app.on('ready', () => {
   if (dev) {
-    await session.defaultSession.loadExtension(
-      path.join(os.homedir(), DEV_DIR)
-    );
+    setTimeout(() => {
+      session.defaultSession.loadExtension(
+        path.join(os.homedir(), DEV_DIR)
+      );
+    }, 3000);
   }
   createWindow();
 });
