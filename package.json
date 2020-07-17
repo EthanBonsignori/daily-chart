@@ -1,15 +1,18 @@
 {
-  "name": "call-chart-cra",
+  "name": "daily-chart",
+  "author": "Ethan Bonsignori",
+  "description": "Electron and Graph.js app to track data over time.",
   "version": "0.1.0",
   "private": true,
   "homepage": "./",
   "main": "src/main.js",
   "scripts": {
-    "start": "cross-env ELECTRON_ENV=production webpack --config webpack.prod.js && electron --noDevServer .",
+    "start": "webpack --config webpack.prod.js && electron --noDevServer .",
     "dev": "cross-env ELECTRON_ENV=development webpack-dev-server --hot --host 0.0.0.0 --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "package": "npm run build",
-    "postpackage": "electron-packager ./ --out=./builds",
+    "postpackage": "electron-packager ./ --ignore= --out=./builds",
+    "dist": "electron-builder",
     "lint": "eslint ./src"
   },
   "browserslist": {
@@ -25,15 +28,11 @@
     ]
   },
   "dependencies": {
-    "@babel/runtime": "^7.10.5",
     "chart.js": "^2.9.3",
-    "electron": "^9.1.0",
-    "electron-devtools-installer": "^3.1.0",
     "moment": "^2.27.0",
     "pluralize": "^8.0.0",
     "react": "^16.13.1",
     "react-chartjs-2": "^2.9.0",
-    "react-contenteditable": "^3.3.5",
     "react-dom": "^16.13.1",
     "react-switch": "^5.0.1",
     "styled-components": "^5.1.1"
@@ -45,13 +44,16 @@
     "@babel/plugin-transform-runtime": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
+    "@babel/runtime": "^7.10.5",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-styled-components": "^1.10.7",
     "babel-preset-minify": "^0.5.1",
     "cross-env": "^7.0.2",
     "csp-html-webpack-plugin": "^4.0.0",
+    "electron": "^9.1.0",
     "electron-builder": "^22.7.0",
+    "electron-devtools-installer": "^3.1.0",
     "electron-packager": "^15.0.0",
     "eslint": "^7.4.0",
     "eslint-config-airbnb": "^18.2.0",
@@ -65,10 +67,12 @@
     "webpack-merge": "^5.0.9"
   },
   "build": {
-    "appId": "com.example.electron-cra",
+    "appId": "com.example.daily-chart",
     "files": [
-      "build/**/*",
-      "node_modules/**/*"
+      "builds/**/*",
+      "node_modules/**/*",
+      "!static/data/*",
+      "static/userSettings.json"
     ],
     "directories": {
       "buildResources": "assets"
