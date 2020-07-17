@@ -49,8 +49,11 @@ npm start
 ## Future Updates
 
 Feature: Choose Daily Chart time range in hours.
+
 Feature: Remove last datapoints.
+
 Feature: See previous days on the daily chart.
+
 Slight annoyance: Changing either Dataset text causes graphs to rerender on each keystroke due to the labels and state updates.
 
 <!-- LICENSE -->
