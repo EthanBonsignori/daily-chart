@@ -10,10 +10,10 @@ const DailyChart = props => {
     dataset1Label,
     dataset2Label,
     chartLabel,
-    hideChartLabel,
-    hideLegend,
-    hideXAxis,
-    hideYAxis,
+    showChartLabel,
+    showLegend,
+    showXAxisLabel,
+    showYAxisLabel,
   } = props;
 
   const data = {
@@ -39,17 +39,17 @@ const DailyChart = props => {
 
   const options = {
     title: {
-      display: hideChartLabel,
+      display: showChartLabel,
       text: `Number of ${chartLabel} on ${moment().format('M/DD/YYYY')}`,
       fontSize: 14,
     },
     legend: {
-      display: !hideLegend,
+      display: showLegend,
     },
     scales: {
       xAxes: [{
         scaleLabel: {
-          display: !hideXAxis,
+          display: showXAxisLabel,
           labelString: 'Hour',
         },
         type: 'time',
@@ -63,7 +63,7 @@ const DailyChart = props => {
       }],
       yAxes: [{
         scaleLabel: {
-          display: !hideYAxis,
+          display: showYAxisLabel,
           labelString: `Number of ${chartLabel}`,
         },
         ticks: {

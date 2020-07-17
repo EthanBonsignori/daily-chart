@@ -11,11 +11,10 @@ const WeeklyChart = props => {
     dataset2Label,
     stacked,
     chartLabel,
-    hideChartLabel,
-    hideLegend,
-    hideXAxis,
-    hideYAxis,
-    hideWeekends,
+    showChartLabel,
+    showLegend,
+    showXAxisLabel,
+    showYAxisLabel,
   } = props;
 
   const data = {
@@ -43,18 +42,18 @@ const WeeklyChart = props => {
 
   const options = {
     title: {
-      display: hideChartLabel,
+      display: showChartLabel,
       text: `Number of ${chartLabel} from ${moment(firstDay).format('MM/DD')} to ${moment(lastDay).format('MM/DD')}`,
       fontSize: 14,
     },
     legend: {
-      display: !hideLegend,
+      display: showLegend,
     },
     scales: {
       xAxes: [{
         stacked,
         scaleLabel: {
-          display: !hideXAxis,
+          display: showXAxisLabel,
           labelString: 'Days',
         },
         ticks: {
@@ -64,7 +63,7 @@ const WeeklyChart = props => {
       yAxes: [{
         stacked,
         scaleLabel: {
-          display: !hideYAxis,
+          display: showYAxisLabel,
           labelString: `Number of ${chartLabel}`,
         },
         ticks: {
@@ -75,7 +74,6 @@ const WeeklyChart = props => {
   };
   return (
     <Bar
-      weekends={hideWeekends}
       data={data}
       options={options}
     />

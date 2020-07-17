@@ -11,10 +11,10 @@ const MonthlyChart = props => {
     dataset2Label,
     stacked,
     chartLabel,
-    hideChartLabel,
-    hideLegend,
-    hideXAxis,
-    hideYAxis,
+    showChartLabel,
+    showLegend,
+    showXAxisLabel,
+    showYAxisLabel,
   } = props;
 
   const data = {
@@ -42,18 +42,18 @@ const MonthlyChart = props => {
 
   const options = {
     title: {
-      display: hideChartLabel,
+      display: showChartLabel,
       text: `Number of ${chartLabel} from ${moment(firstDay).format('MM/DD')} to ${moment(lastDay).format('MM/DD')}`,
       fontSize: 14,
     },
     legend: {
-      display: !hideLegend,
+      display: showLegend,
     },
     scales: {
       xAxes: [{
         stacked,
         scaleLabel: {
-          display: !hideXAxis,
+          display: showXAxisLabel,
           labelString: 'Days',
         },
         ticks: {
@@ -63,7 +63,7 @@ const MonthlyChart = props => {
       yAxes: [{
         stacked,
         scaleLabel: {
-          display: !hideYAxis,
+          display: showYAxisLabel,
           labelString: `Number of ${chartLabel}`,
         },
         ticks: {
