@@ -25,9 +25,9 @@ This Chart app started as a way to track my phone calls to a certain government 
 
 If you would like to use this, clone this repo.
 
-### Installation (clone)
+## Installation
 ##### Prerequisites
-* Node - install the latest version of node at https://nodejs.org
+* Node - install node v12.4.0 at https://nodejs.org
 
 1. Clone the repo
 ```sh
