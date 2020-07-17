@@ -1,28 +1,28 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import { singular } from 'pluralize';
 import DailyChart from './DailyChart';
 import WeeklyChart from './WeeklyChart';
 import MonthlyChart from './MonthlyChart';
-import SettingsSwitch from './SettingSwitch';
 import GlobalStyle from '../config/GlobalStyle';
-import {
-  DataButtonContainer,
-  DataButton,
-} from './DataButton';
-import {
-  writeUserSettingToFile,
-  getUserSettingsFromFile,
-} from '../config/userSettings';
 import {
   TabContainer,
   Tab,
   TabPanel,
 } from './Tabs';
 import {
-  UserSettingsContainer,
-  UserSettingsTitle,
-  UserSettingsColumn,
-} from './UserSettings';
+  DataButtonContainer,
+  DataButton,
+} from './DataButton';
+import {
+  SettingDisplay,
+  Setting,
+} from './SettingDisplay';
+import {
+  writeUserSettingToFile,
+  getUserSettingsFromFile,
+  writeUserSettingsToFile,
+} from '../config/userSettings';
 import {
   getDailyDataFromFile,
   writeDataToFile,
@@ -48,15 +48,24 @@ class App extends Component {
       monthlyDataset1: [],
       monthlyDataset2: [],
       userSettings: {
+        stacked: false,
         hideWeekends: false,
         hideLegends: false,
-        stacked: true,
+        hideXAxisLabel: false,
+        hideYAxisLabel: false,
+        hideChartLabel: false,
+        hideDataset1: false,
+        hideDataset2: false,
+        chartLabel: 'loading',
+        dataset1Label: 'loading',
+        dataset2Label: 'loading',
       },
     };
   }
 
   componentDidMount() {
     this.updateUserSettingsState();
+    this.updateCharts();
   }
 
   updateUserSettingsState() {
@@ -126,11 +135,19 @@ class App extends Component {
     });
   }
 
-  handleSwitchToggle = (checked, event, id) => {
+  handleSettingSwitch = (checked, event, id) => {
     const userSettings = { ...this.state.userSettings };
     userSettings[id] = checked;
     writeUserSettingToFile(id, checked);
     this.updateUserSettingsState();
+  }
+
+  handleSettingInput = event => {
+    const { id, value } = event.target;
+    const { userSettings } = this.state;
+    userSettings[id] = value;
+    this.setState({ userSettings });
+    writeUserSettingsToFile(userSettings);
   }
 
   render() {
@@ -146,49 +163,59 @@ class App extends Component {
       monthlyDataset2,
       userSettings,
     } = this.state;
+
+    const {
+      stacked,
+      hideWeekends,
+      hideLegends,
+      hideXAxisLabel,
+      hideYAxisLabel,
+      hideChartLabel,
+      hideDataset1,
+      hideDataset2,
+      chartLabel,
+      dataset1Label,
+      dataset2Label,
+    } = userSettings;
+
     return (
       <>
         <TabContainer>
-          <Tab
-            active={activeTab === '1D'}
-            name='1D'
-            onClick={this.handleActiveTab}
-          >
-            Today
-          </Tab>
-          <Tab
-            active={activeTab === '7D'}
-            name='7D'
-            onClick={this.handleActiveTab}
-          >
-            7 Days
-          </Tab>
-          <Tab
-            active={activeTab === '30D'}
-            name='30D'
-            onClick={this.handleActiveTab}
-          >
-            30 Days
-          </Tab>
+          <Tab active={activeTab === '1D'} name='1D' onClick={this.handleActiveTab}>Today</Tab>
+          <Tab active={activeTab === '7D'} name='7D' onClick={this.handleActiveTab}>7 Days</Tab>
+          <Tab active={activeTab === '30D'} name='30D' onClick={this.handleActiveTab}>30 Days</Tab>
         </TabContainer>
         <TabPanel active={activeTab === '1D'}>
           <DailyChart
             dataset1={dailyDataset1}
             dataset2={dailyDataset2}
-            hideLegend={userSettings.hideLegends}
+            dataset1Label={dataset1Label}
+            dataset2Label={dataset2Label}
+            hideDataset1={hideDataset1}
+            hideDataset2={hideDataset2}
+            chartLabel={chartLabel}
+            hideChartLabel={hideChartLabel}
+            hideLegend={hideLegends}
+            hideXAxisLabel={hideXAxisLabel}
+            hideYAxisLabel={hideYAxisLabel}
           />
-          <DataButtonContainer>
-            <DataButton name='dataset1' onClick={this.handleAddData}>Add Unanswered Call</DataButton>
-            <DataButton name='dataset2' onClick={this.handleAddData}>Add Answered Call</DataButton>
-          </DataButtonContainer>
         </TabPanel>
         <TabPanel active={activeTab === '7D'}>
           <WeeklyChart
             labels={weeklyLabels}
             dataset1={weeklyDataset1}
             dataset2={weeklyDataset2}
-            stacked={userSettings.stacked}
-            hideLegend={userSettings.hideLegends}
+            dataset1Label={dataset1Label}
+            dataset2Label={dataset2Label}
+            hideDataset1={hideDataset1}
+            hideDataset2={hideDataset2}
+            stacked={stacked}
+            chartLabel={chartLabel}
+            hideChartLabel={hideChartLabel}
+            hideLegend={hideLegends}
+            hideXAxisLabel={hideXAxisLabel}
+            hideYAxisLabel={hideYAxisLabel}
+            hideWeekends={hideWeekends}
           />
         </TabPanel>
         <TabPanel active={activeTab === '30D'}>
@@ -196,33 +223,55 @@ class App extends Component {
             labels={monthlyLabels}
             dataset1={monthlyDataset1}
             dataset2={monthlyDataset2}
-            stacked={userSettings.stacked}
-            hideLegend={userSettings.hideLegends}
+            dataset1Label={dataset1Label}
+            dataset2Label={dataset2Label}
+            hideDataset1={hideDataset1}
+            hideDataset2={hideDataset2}
+            stacked={stacked}
+            chartLabel={chartLabel}
+            hideChartLabel={hideChartLabel}
+            hideLegend={hideLegends}
+            hideXAxisLabel={hideXAxisLabel}
+            hideYAxisLabel={hideYAxisLabel}
           />
         </TabPanel>
-        <UserSettingsContainer>
-          <UserSettingsTitle>Settings</UserSettingsTitle>
-          <UserSettingsColumn>
-            <SettingsSwitch
-              label='Hide Weekend Dates'
-              id='hideWeekends'
-              onChange={this.handleSwitchToggle}
-              checked={userSettings.hideWeekends}
-            />
-            <SettingsSwitch
-              label='Hide Legend'
-              id='hideLegends'
-              onChange={this.handleSwitchToggle}
-              checked={userSettings.hideLegends}
-            />
-            <SettingsSwitch
-              label='Stacked Bar Charts'
-              id='stacked'
-              onChange={this.handleSwitchToggle}
-              checked={userSettings.stacked}
-            />
-          </UserSettingsColumn>
-        </UserSettingsContainer>
+        <DataButtonContainer>
+          <DataButton name='dataset1' onClick={this.handleAddData}>Add {singular(dataset1Label)}</DataButton>
+          <DataButton name='dataset2' onClick={this.handleAddData}>Add {singular(dataset2Label)}</DataButton>
+        </DataButtonContainer>
+        <SettingDisplay>
+          <Setting
+            name='Title'
+            subname='plural type of data'
+            inputID='chartLabel'
+            switchID='hideChartLabel'
+            inputValue={chartLabel}
+            checked={hideChartLabel}
+            onChangeInput={this.handleSettingInput}
+            onChangeSwitch={this.handleSettingSwitch}
+          />
+          <Setting
+            name='Dataset 1'
+            subname='i.e. Spam Calls'
+            inputID='dataset1Label'
+            switchID='hideDataset1'
+            inputValue={dataset1Label}
+            checked={hideDataset1}
+            onChangeInput={this.handleSettingInput}
+            onChangeSwitch={this.handleSettingSwitch}
+          />
+          <Setting
+            name='Dataset 2'
+            subname='i.e. Other Calls'
+            inputID='dataset2Label'
+            switchID='hideDataset2'
+            inputValue={dataset2Label}
+            checked={hideDataset2}
+            onChangeInput={this.handleSettingInput}
+            onChangeSwitch={this.handleSettingSwitch}
+          />
+        </SettingDisplay>
+
         <GlobalStyle />
       </>
     );
