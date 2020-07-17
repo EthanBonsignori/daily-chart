@@ -12,7 +12,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Chart Screenshot][chart-screenshot]](https://github.com/EthanBonsignori/call-chart-react)
+[![Chart Screenshot][chart-screenshot]](https://github.com/EthanBonsignori/daily-chart)
 
 This Chart app started as a way to track my phone calls to a certain government organization during a certain pandemic. I wanted it to be universal and customizable for other purposes, so I converted it to React, added settings, and a pretty UI so that anyone could use it. Why? To track occurences of just about anything over a day and see that data in a nice graph! And don't forget you can look at that data in bar-form over the past 7 or 30 days too, with optional weekend dates!
 
@@ -31,7 +31,7 @@ If you would like to use this, clone this repo.
 
 1. Clone the repo
 ```sh
-git clone https://github.com/ethanbonsignori/call-chart-react
+git clone https://github.com/EthanBonsignori/daily-chart
 ```
 2. Install NPM packages
 ```sh
@@ -63,7 +63,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Ethan Bonsignori - [@EthanBonsignori](https://twitter.com/EthanBonsignori) - ethanbon.com
 
-Project Link: [https://github.com/EthanBonsignori/call-chart-react](https://github.com/EthanBonsignori/call-chart-react)
+Project Link: [Daily Chart](https://github.com/EthanBonsignori/daily-chart)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
