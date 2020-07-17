@@ -12,9 +12,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Call Chart Screenshot][chart-screenshot]](https://github.com/EthanBonsignori/call-chart-react)
+[![Chart Screenshot][chart-screenshot]](https://github.com/EthanBonsignori/call-chart-react)
 
-I wanted a simple way to see how many times I'd called unemployment without getting an answer, so I created this chart to keep track of each call. Pressing ether add call button adds a new datapoint to the graph at the time it was pressed. 
+This Chart app started as a way to track my phone calls to a certain government organization during a certain pandemic. I wanted it to be universal and customizable for other purposes, so I converted it to React, added settings, and a pretty UI so that anyone could use it. Why? To track occurences of just about anything over a day and see that data in a nice graph! And don't forget you can look at that data in bar-form over the past 7 or 30 days too, with optional weekend dates!
 
 ### Built With
 * [React](https://reactjs.org)
@@ -25,15 +25,13 @@ I wanted a simple way to see how many times I'd called unemployment without gett
 
 If you would like to use this, clone this repo.
 
-### Prerequisites
-
+### Installation (clone)
+##### Prerequisites
 * Node - install the latest version of node at https://nodejs.org
-
-### Installation
 
 1. Clone the repo
 ```sh
-git clone https://github.com/your_username_/Project-Name.git
+git clone https://github.com/ethanbonsignori/call-chart-react
 ```
 2. Install NPM packages
 ```sh
@@ -44,9 +42,16 @@ npm install
 npm start
 ```
 
+## Customize your chart!
+
+![Call Chart Screenshot][chart-settings-gif]
+
 ## Future Updates
 
-I plan to make this data neutral so it can be customized and used for any purpose.
+Feature: Choose Daily Chart time range in hours.
+Feature: Remove last datapoints.
+Feature: See previous days on the daily chart.
+Slight annoyance: Changing either Dataset text causes graphs to rerender on each keystroke due to the labels and state updates.
 
 <!-- LICENSE -->
 ## License
@@ -63,3 +68,4 @@ Project Link: [https://github.com/EthanBonsignori/call-chart-react](https://gith
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [chart-screenshot]: static/images/chart-screenshot.png
+[chart-settings-gif]: static/images/chart-settings.gif
