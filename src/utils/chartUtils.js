@@ -8,9 +8,9 @@ export const generateFilenames = days => {
   while (filenames.length < days) {
     const filenameDate = moment().subtract(i, 'days').format('MM-DD-YYYY');
     const dayOfTheWeek = moment(filenameDate, 'MM-DD-YYYY').isoWeekday();
-    if (userSettings.hideWeekends && dayOfTheWeek !== 6 && dayOfTheWeek !== 7) {
+    if (userSettings.showWeekends && dayOfTheWeek !== 6 && dayOfTheWeek !== 7) {
       filenames.push(`${filenameDate}.json`);
-    } else if (!userSettings.hideWeekends) {
+    } else if (!userSettings.showWeekends) {
       filenames.push(`${filenameDate}.json`);
     }
     i += 1;
