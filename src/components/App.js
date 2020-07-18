@@ -138,8 +138,6 @@ class App extends Component {
   }
 
   handleSettingSwitch = (checked, event, id) => {
-    const userSettings = { ...this.state.userSettings };
-    userSettings[id] = checked;
     writeUserSettingToFile(id, checked);
     this.updateUserSettingsState();
   }
