@@ -11,6 +11,8 @@ let defaultUserSettings = {
   showChartLabel: false,
   showDataset1: false,
   showDataset2: false,
+  yAxisStart: 5,
+  yAxisEnd: 20,
   chartLabel: '[Data Points]',
   dataset1Label: '[Dataset 1]',
   dataset2Label: '[Dataset 2]',

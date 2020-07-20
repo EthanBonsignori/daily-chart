@@ -9,6 +9,8 @@ const DailyChart = props => {
     dataset2,
     dataset1Label,
     dataset2Label,
+    yAxisStart,
+    yAxisEnd,
     chartLabel,
     showChartLabel,
     showLegend,
@@ -57,8 +59,8 @@ const DailyChart = props => {
           unit: 'hour',
         },
         ticks: {
-          min: moment().startOf('day').add(8, 'hours'),
-          max: moment().endOf('day').subtract(6, 'hours'),
+          min: moment().hour(yAxisStart),
+          max: moment().hour(yAxisEnd),
         },
       }],
       yAxes: [{
