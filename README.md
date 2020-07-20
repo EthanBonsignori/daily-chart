@@ -14,7 +14,7 @@
 
 [![Chart Screenshot][chart-screenshot]](https://github.com/EthanBonsignori/daily-chart)
 
-This Chart app started as a way to track my phone calls to a certain government organization during a certain pandemic. I wanted it to be universal and customizable for other purposes, so I converted it to React, added settings, and a pretty UI so that anyone could use it. Why? To track occurences of just about anything over a day and see that data in a nice graph! And don't forget you can look at that data in bar-form over the past 7 or 30 days too, with optional weekend dates!
+This Chart app started as a way to track my phone calls to a certain government organization during a certain pandemic. I wanted it to be universal and customizable for other purposes, so I converted it to React, added settings, and a pretty UI so that anyone could use it. Why? To track occurences of just about anything over a day and see that data in a nice graph! You can look at that data in bar-graph form over the past 7 or 30 days too, with optional weekend dates!
 
 ### Built With
 * [React](https://reactjs.org)
@@ -44,11 +44,13 @@ npm start
 
 ## Customize your chart!
 
+Check out some of the customization options in action:
+
 ![Call Chart Screenshot][chart-settings-gif]
 
 ## Future Updates
 
-Feature: Choose Daily Chart time range in hours.
+✔️ Added! ~~Feature: Choose Daily Chart time range in hours.~~ 
 
 Feature: Remove last datapoints.
 
