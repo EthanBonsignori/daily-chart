@@ -57,6 +57,8 @@ class App extends Component {
         showChartLabel: false,
         showDataset1: false,
         showDataset2: false,
+        yAxisStart: 6,
+        yAxisEnd: 1,
         chartLabel: 'loading',
         dataset1Label: 'loading',
         dataset2Label: 'loading',
@@ -173,6 +175,8 @@ class App extends Component {
       showChartLabel,
       showDataset1,
       showDataset2,
+      yAxisStart,
+      yAxisEnd,
       chartLabel,
       dataset1Label,
       dataset2Label,
@@ -193,6 +197,8 @@ class App extends Component {
             dataset2Label={dataset2Label}
             showDataset1={showDataset1}
             showDataset2={showDataset2}
+            yAxisStart={yAxisStart}
+            yAxisEnd={yAxisEnd}
             chartLabel={chartLabel}
             showChartLabel={showChartLabel}
             showLegend={showLegends}
@@ -215,7 +221,6 @@ class App extends Component {
             showLegend={showLegends}
             showXAxisLabel={showXAxisLabel}
             showYAxisLabel={showYAxisLabel}
-            showWeekends={showWeekends}
           />
         </TabPanel>
         <TabPanel active={activeTab === '30D'}>
@@ -263,6 +268,22 @@ class App extends Component {
               subname='i.e. Other Calls'
               id='dataset2Label'
               value={dataset2Label}
+              onChange={this.handleSettingInput}
+            />
+            <Setting
+              type='select'
+              name='Start Hour'
+              subname='AM'
+              id='yAxisStart'
+              value={yAxisStart}
+              onChange={this.handleSettingInput}
+            />
+            <Setting
+              type='select'
+              name='End Hour'
+              subname='PM'
+              id='yAxisEnd'
+              value={yAxisEnd}
               onChange={this.handleSettingInput}
             />
           </SettingsColumn>
